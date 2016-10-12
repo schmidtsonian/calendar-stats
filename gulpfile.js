@@ -21,7 +21,6 @@ var del             = require('del');
 var runSequence     = require('run-sequence');
 var open            = require('gulp-open');
 
-
 var path = {
     scripts : {
         src  : 'app/typescripts/**/*.ts',
@@ -69,13 +68,13 @@ gulp.task('uri', function(){
 
 gulp.task('clean:public', function() {
   return del.sync('public');
-})
+});
 
 gulp.task('fonts', function() {
   return gulp.src(path.fonts.src)
     .pipe(gulp.dest(path.fonts.dest))
     .pipe(connect.reload());
-})
+});
 
 gulp.task('imagemin', function(){
     return gulp.src(path.images.src)
@@ -150,17 +149,6 @@ gulp.task('watch', function () {
     gulp.watch(path.images.src, ['images']);
     gulp.watch(path.images.src, ['fonts']);
 });
-
-/*gulp.task('default', [
-    'main-bower-files', 
-    'scripts', 
-    'styles', 
-    'imagemin', 
-    'images', 
-    'views', 
-    'webserver', 
-    'watch'
-]);*/
 
 //TODO:
 //https://github.com/addyosmani/critical-path-css-demo
