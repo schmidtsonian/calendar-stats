@@ -2,16 +2,29 @@ include _master.jade
 
 block body
 
-    section.wrapper
+    section.wrapper.disable
         ul.levels
-            - for (var x = 0; x < 10; x++)
-                li: .number= ( x + 1 ) * 10
+            - for (var x = 10; x > 0; x--)
+                li: .levels__number= x * 10
         
         ul.bars
             - for (var x = 0; x < 12; x++)
-                li: .bar a
-        
-        .months
+                li 
+                    .bar.bar__shadow
+                    .bar.bar__top
+        ul.months
+            li jan
+            li feb
+            li mar
+            li apr
+            li may
+            li jun
+            li jul
+            li aug
+            li sept
+            li oct
+            li nov
+            li dic
 
         .year 2015
 

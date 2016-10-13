@@ -1,3 +1,127 @@
+* {
+    box-sizing: border-box;
+}
+
 body {
+    position: fixed;
+    min-width: 768px;
+    width: 100%;
+    height: 100%;
     background-color: $color_vista_white;
+}
+
+.wrapper {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    margin: auto;
+    width: 80%;
+    height: calc(100% - 40px);
+}
+
+.year {
+    position: absolute;
+    top: 0;
+    bottom: 41px;
+    z-index: 1;
+    display: block;
+    margin: auto;
+    padding-left: 50px;
+    width: 100%;
+    height: 250px;
+    color: rgba($color_blaze_orange, 0.5);
+    text-align: center;
+    font-weight: 900;
+    font-size: 250px;
+    line-height: 250px;
+}
+
+.levels {
+    float: left;
+    width: 50px;
+    height: calc(100% - 40px);
+    border-bottom: 1px solid $color_kabul;
+    text-align: right;
+
+    li {
+        height: 10%;
+
+        &:last-child .levels__number:after {
+            content: none;
+        }
+    }
+}
+
+.months {
+    float: left;
+    margin-left: 50px;
+    width: calc(100% - 50px);
+    border-left: 1px solid $color_kabul;
+
+    li {
+        position: relative;
+        float: left;
+        margin-bottom: -15px;
+        width: 8.33%;
+        text-align: center;
+    }
+}
+
+.levels__number {
+    padding-right: 5px;
+    height: 100%;
+    line-height: 4em;
+
+    &:after {
+        position: absolute;
+        left: 51px;
+        display: block;
+        width: calc(100% - 51px);
+        height: 1px;
+        background-color: $color_pampas;
+        content: "";
+    }
+}
+
+.bars {
+    float: left;
+    width: calc(100% - 50px);
+    height: calc(100% - 40px);
+    border-top: 1px solid $color_pampas;
+    border-right: 1px solid $color_kabul;
+    border-bottom: 1px solid $color_kabul;
+    border-left: 1px solid $color_kabul;
+
+    li {
+        position: relative;
+        float: left;
+        width: 8.33%;
+        height: 100%;
+        border-left: 1px solid $color_pampas;
+
+        &:first-child {
+            border: 0 none;
+        }
+    }
+}
+
+.bar {
+    position: absolute;
+    width: 100%;
+    border-bottom: 2px solid $color_blaze_orange;
+    background-color: $color_vista_white;
+}
+
+.bar__shadow {
+    box-shadow: 0 30px 30px 0 rgba($color_kabul, 0.3);
+}
+
+.bar__top {
+    z-index: 1;
+}
+
+.disable .bar {
+    height: 85% !important;
 }
