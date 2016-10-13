@@ -1,33 +1,8 @@
-/**
- * Description: Short description.
- * Version: 1.0.0
- * Last update: YYYY/MM/DD
- * Author: User Name <username@gmail.com>
- *
- * Summary:
- *
- *	0. ELEMENT
- *		- 0.1. TYPE ELEMENT
- *		- 0.2. TYPE ELEMENT
- *	1. ELEMENT
- *		- 1.1. TYPE ELEMENT
- *		- 1.2. TYPE ELEMENT
- */
-
-/* ==========================================================================
-   0. ELEMENT
-   ========================================================================== */
-
-/* 0.1. TYPE ELEMENT
-   ========================================================================== */
-
-/* 0.2. TYPE ELEMENT
-   ========================================================================== */
-
-html,
-body{
+html,body {
+    color: $color_kabul;
     font-family: 'Work Sans', sans-serif;
-    font-size: 12px;
+    font-size: 14px;
+    font-weight: 400;
     letter-spacing: 0.1em;
     line-height: 2.25em;
 }
