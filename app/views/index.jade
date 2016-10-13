@@ -1,17 +1,17 @@
+include _master.jade
 
-doctype html
-html(lang="en")
-    head
-        title Estebanco
+block body
 
-        meta(name="description" content="Estebanco experiments")
-        meta(name="viewport" content="width=device-width, initial-scale=1.0")
+    section.wrapper
+        ul.levels
+            - for (var x = 0; x < 10; x++)
+                li: .number= ( x + 1 ) * 10
         
-        link(rel="icon", type="ico", href="images/estebanco_32.png", sizes='32x32')
-        link(rel="stylesheet", type="text/css", href="https://fonts.googleapis.com/css?family=Oswald:400,700|Playfair+Display")
-        link(rel="stylesheet", type="text/css", href="css/main.css")
+        ul.bars
+            - for (var x = 0; x < 12; x++)
+                li: .bar a
+        
+        .months
 
-    body
-            
-        script(src="js/vendor.js")
-        script(src="js/main.js")
+        .year 2015
+
