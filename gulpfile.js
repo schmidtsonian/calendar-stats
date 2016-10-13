@@ -1,6 +1,8 @@
 
 var gulp            = require('gulp');
-var gulpFilter      = require('gulp-filter')
+var gutil           = require('gulp-util');
+var jsonminify      = require('gulp-json-minify');
+var gulpFilter      = require('gulp-filter');
 var concat          = require('gulp-concat');
 var uglify          = require('gulp-uglify');
 var sass            = require('gulp-sass');
@@ -44,8 +46,12 @@ var path = {
         dest : 'public/images'
     },
     fonts   : {
-        src  : 'app/fonts/**/*',
+        src  : 'app/assets/fonts/**/*',
         dest : 'public/fonts'
+    },
+    jsons   : {
+        src  : 'app/assets/jsons/**/*.json',
+        dest : 'public/jsons'
     },
     bower   : {
         src : './bower.json'
@@ -60,30 +66,38 @@ gulp.task('webserver', function() {
     });
 });
 
-gulp.task('uri', function(){
+gulp.task('uri', function() {
     gulp.src(__filename)
     .pipe(open({uri: 'http://localhost:8080'}));
 });
 
-
 gulp.task('clean:public', function() {
-  return del.sync('public');
+    return del.sync('public');
 });
 
 gulp.task('fonts', function() {
-  return gulp.src(path.fonts.src)
-    .pipe(gulp.dest(path.fonts.dest))
-    .pipe(connect.reload());
+    return gulp.src(path.fonts.src)
+        .pipe(gulp.dest(path.fonts.dest))
+        .pipe(connect.reload());
 });
 
-gulp.task('imagemin', function(){
+gulp.task('jsons', function() {
+    return gulp.src(path.jsons.src)
+        .pipe( plumber() )
+        .pipe(jsonminify())
+        .pipe(gulp.dest(path.jsons.dest))
+        .on('error', gutil.log)
+        .pipe(connect.reload());
+});
+
+gulp.task('imagemin', function() {
     return gulp.src(path.images.src)
         .pipe(imagemin())
         .pipe(gulp.dest(path.images.dest))
         .pipe(connect.reload());
 } );
 
-gulp.task('images', function(){
+gulp.task('images', function() {
   return gulp.src(path.images.src)
   // Caching images that ran through imagemin
   .pipe(cache(imagemin({
@@ -105,6 +119,7 @@ gulp.task('main-bower-files', function() {
 gulp.task('scripts', function () {
     return gulp.src(path.scripts.src)
         .pipe(gulpFilter(path.scripts.filter))
+        .pipe( plumber() )
         .pipe(sourcemaps.init())
         .pipe(ts({
                 target: "ES5",
@@ -120,6 +135,7 @@ gulp.task('scripts', function () {
 gulp.task('styles', function () {
     return gulp.src(path.styles.src)
         .pipe(gulpFilter(['*', '_*.*']))
+        .pipe( plumber() )
         .pipe(sourcemaps.init())
         .pipe(sass({ 
             includePaths: require('node-bourbon').includePaths
@@ -147,6 +163,7 @@ gulp.task('watch', function () {
     gulp.watch(path.scripts.src, ['scripts']);
     gulp.watch(path.images.src, ['imagemin']);
     gulp.watch(path.images.src, ['images']);
+    gulp.watch(path.images.src, ['jsons']);
     gulp.watch(path.images.src, ['fonts']);
 });
 
@@ -160,6 +177,7 @@ gulp.task('default', function(callback) {
         'styles', 
         'imagemin', 
         'images',
+        'jsons',
         'fonts',
         'views'], 
     'webserver',
