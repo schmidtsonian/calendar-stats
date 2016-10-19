@@ -80,8 +80,9 @@ body {
         display: block;
         width: calc(100% - 51px);
         height: 1px;
-        background-color: $color_pampas;
+        background-color: rgba(221, 221, 221, 0.21);
         content: "";
+        z-index: 2;
     }
 }
 
