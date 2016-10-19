@@ -83,7 +83,6 @@ gulp.task('fonts', function() {
 
 gulp.task('jsons', function() {
     return gulp.src(path.jsons.src)
-        .pipe( plumber() )
         .pipe(jsonminify())
         .pipe(gulp.dest(path.jsons.dest))
         .on('error', gutil.log)
@@ -119,7 +118,6 @@ gulp.task('main-bower-files', function() {
 gulp.task('scripts', function () {
     return gulp.src(path.scripts.src)
         .pipe(gulpFilter(path.scripts.filter))
-        .pipe( plumber() )
         .pipe(sourcemaps.init())
         .pipe(ts({
                 target: "ES5",
@@ -134,14 +132,13 @@ gulp.task('scripts', function () {
 
 gulp.task('styles', function () {
     return gulp.src(path.styles.src)
+        .pipe(plumber())
         .pipe(gulpFilter(['*', '_*.*']))
-        .pipe( plumber() )
         .pipe(sourcemaps.init())
         .pipe(sass({ 
             includePaths: require('node-bourbon').includePaths
         }))
-        .pipe(sass().on('error', sass.logError))
-        .pipe(sass({outputStyle: 'compressed'}))
+        .on("error", sass.logError)
         .pipe(sourcemaps.write())
         .pipe(gulp.dest(path.styles.dest))
         .pipe(connect.reload());
@@ -149,7 +146,6 @@ gulp.task('styles', function () {
 
 gulp.task( 'views', function() {
     return gulp.src( path.views.src )
-        .pipe( plumber() )
         .pipe( jade( {pretty: true } ))
         .pipe( gulpFilter( path.views.filter ))
         .pipe( gulp.dest( path.views.dest ))
