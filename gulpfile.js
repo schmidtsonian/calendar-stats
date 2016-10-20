@@ -83,6 +83,7 @@ gulp.task('fonts', function() {
 
 gulp.task('jsons', function() {
     return gulp.src(path.jsons.src)
+        .pipe(plumber())
         .pipe(jsonminify())
         .pipe(gulp.dest(path.jsons.dest))
         .on('error', gutil.log)

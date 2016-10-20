@@ -9,7 +9,7 @@ block body
         
         ul.bars
             - for (var x = 0; x < 12; x++)
-                li 
+                li.js-bar 
                     .bar.bar__shadow
                     .bar.bar__top
         ul.months
@@ -26,5 +26,9 @@ block body
             li nov
             li dic
 
-        .year 2015
+        .year 
+            span(class='js-year')
+            span(class='js-year')
+            span(class='js-year')
+            span(class='js-year')
 
