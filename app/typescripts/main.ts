@@ -1,55 +1,51 @@
 /// <reference path="definitions/jquery/jquery.d.ts" />
 
+
+////////////////////////////////
+//
+// this is only an exercice, the promises are just for practice
+//
+//
 namespace app {
 
-
-    interface Month {
+    interface Year {
         name: number;
         months: [number];
     };
 
     interface Calendar {
-        calendar: [Month];
+        calendar: [Year];
     }
 
     export class Main {
         
         private pathCalendar: string;
-        private calendar: Calendar;
+        private data: Calendar;
 
         private currentYear: number;
         private currentStats: [number];
 
+        private $year: JQuery;
+        private $stats: JQuery;
+
         constructor() {
 
             this.pathCalendar = '../jsons/calendar.json';
+            this.$year = $( '#js-year' );
+            this.$stats = $( '.js-stats' );
         }
 
         init() {
 
             this
-                .cacheElements()
-                .bindings();
-        }
-
-        private cacheElements(): this {
-
-            return this;
-        }
-
-        private bindings(): this {
-
-
-            this
                 .loadCalendar()
                 .then( this.getLastYear.bind( this ) )
-                .then( () => { console.log(this.currentYear); })
-                
+                .then( this.getStats.bind( this ) )
+                .then( this.setStats.bind( this ) )
 
-            return this;
         }
 
-        private loadCalendar():JQueryPromise<{}> {
+        private loadCalendar(): JQueryPromise<{}> {
 
             return $.getJSON( this.pathCalendar);
         }
@@ -58,19 +54,69 @@ namespace app {
 
             var defer = $.Deferred();
 
-            const currentYear = data.calendar[ data.calendar.length - 1 ];
-
+            this.data = data;
+            const currentYear = this.data.calendar[ this.data.calendar.length - 1 ];
             this.currentYear = currentYear.name;
 
-            setTimeout(()=>{
-
-                defer.resolve()
-            }, 2000);
+            defer.resolve();
 
             return defer.promise();
         }
-    }
 
-    export const main = new Main();
-    main.init();
+        private getStats( yearName: number = this.currentYear ): JQueryPromise<Year> {
+
+            var defer = $.Deferred();
+
+            for ( var i = this.data.calendar.length - 1; i >= 0; i-- ) {
+
+                if( this.data.calendar[ i ].name == yearName ) {
+                    
+                    defer.resolve( this.data.calendar[ i ] );
+                    
+                    return defer.promise();
+                }
+            }
+
+            defer.resolve( null );
+
+            return defer.promise();
+        }
+
+        private setStats( year: Year ): JQueryPromise<Year> {
+
+            var defer = $.Deferred();
+            
+            if( year ){
+                this.currentYear = year.name;
+                this.currentStats = year.months;
+
+                this.displayData();
+            }
+
+            defer.resolve( null );
+
+            return defer.promise();
+        }
+
+        private displayData() {
+
+
+            let digits = ( '' + this.currentYear ).split( '' );
+            this.$year.html('');
+            for (var i = digits.length-1; i >= 0; i--) {
+                this.$year.prepend('<span>' + digits[ i ] + '</span>');
+            }
+        }
+    }
 }
+
+let main: any;
+
+
+$('document')
+.ready( () => {
+    main = new app.Main();
+    main.init();
+});
+
+
