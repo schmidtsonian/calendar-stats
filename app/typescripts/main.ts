@@ -25,12 +25,18 @@ namespace app {
         private currentYear: number;
         private currentStats: [number];
 
+        private classNameDisable: string;
+
+        private $container: JQuery;
         private $year: JQuery;
         private $stats: JQuery;
 
         constructor() {
 
             this.pathCalendar = '../jsons/calendar.json';
+            this.classNameDisable = 'disable';
+            
+            this.$container = $( '#js-conainer' )
             this.$year = $( '#js-year' );
             this.$stats = $( '.js-stats' );
         }
@@ -41,8 +47,7 @@ namespace app {
                 .loadCalendar()
                 .then( this.getLastYear.bind( this ) )
                 .then( this.getStats.bind( this ) )
-                .then( this.setStats.bind( this ) )
-
+                .then( this.setStats.bind( this ) );
         }
 
         private loadCalendar(): JQueryPromise<{}> {
@@ -62,6 +67,8 @@ namespace app {
 
             return defer.promise();
         }
+
+
 
         private getStats( yearName: number = this.currentYear ): JQueryPromise<Year> {
 
@@ -103,9 +110,28 @@ namespace app {
 
             let digits = ( '' + this.currentYear ).split( '' );
             this.$year.html('');
-            for (var i = digits.length-1; i >= 0; i--) {
+
+            for ( var i = digits.length-1; i >= 0; i-- ) {
+
                 this.$year.prepend('<span>' + digits[ i ] + '</span>');
             }
+            for (var i = this.currentStats.length - 1; i >= 0; i--) {
+                
+                this.$stats
+                .eq(i)
+                .find('.bar')
+                .css({'height': (100 - this.currentStats[i]) + '%'});
+            }
+            
+            this.$container
+            .removeClass( this.classNameDisable );
+        }
+
+        private loadYear( yearName: number ) {
+
+            this
+                .getStats(yearName)
+                .then( this.setStats.bind( this ) );
         }
     }
 }

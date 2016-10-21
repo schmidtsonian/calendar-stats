@@ -2,15 +2,17 @@ include _master.jade
 
 block body
 
-    section.wrapper.disable
+    section.wrapper(
+    id='js-conainer',
+    class='disable')
         ul.levels
             - for (var x = 10; x > 0; x--)
                 li: .levels__number= x * 10
         
-        ul.bars
+        ul.bars.shadow
             - for (var x = 0; x < 12; x++)
                 li.js-stats 
-                    .bar.bar__shadow
+                    .bar.shadow
                     .bar.bar__top
         ul.months
             li jan

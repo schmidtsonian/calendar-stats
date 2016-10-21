@@ -125,6 +125,11 @@ body {
         &:first-child {
             border: 0 none;
         }
+        @for $i from 1 through 12 {
+            &:nth-child(#{$i}) .bar{
+                @include transition-delay(#{0.05*$i}s)
+            }
+        }
     }
 }
 
@@ -134,9 +139,13 @@ body {
     width: 100%;
 
     background-color: $color_vista_white;
+
+    @include transition(height 0.95s $ease-in-out-back);
+
+
 }
 
-.bar__shadow {
+.shadow {
     box-shadow: 0 30px 30px 0 rgba($color_kabul, .3);
 }
 
