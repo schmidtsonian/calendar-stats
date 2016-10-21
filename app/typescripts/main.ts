@@ -26,6 +26,8 @@ namespace app {
         private currentStats: [number];
 
         private classNameDisable: string;
+        private classNameEneable: string;
+        private classNameYear: string;
 
         private $container: JQuery;
         private $year: JQuery;
@@ -35,6 +37,8 @@ namespace app {
 
             this.pathCalendar = '../jsons/calendar.json';
             this.classNameDisable = 'disable';
+            this.classNameEneable = 'eneable';
+            this.classNameYear = 'year__name';
             
             this.$container = $( '#js-conainer' )
             this.$year = $( '#js-year' );
@@ -46,6 +50,7 @@ namespace app {
             this
                 .loadCalendar()
                 .then( this.getLastYear.bind( this ) )
+                .then( this.setYears.bind( this ) )
                 .then( this.getStats.bind( this ) )
                 .then( this.setStats.bind( this ) );
         }
@@ -55,6 +60,8 @@ namespace app {
             return $.getJSON( this.pathCalendar);
         }
 
+        
+
         private getLastYear( data: Calendar ): JQueryPromise<{}> {
 
             var defer = $.Deferred();
@@ -62,6 +69,29 @@ namespace app {
             this.data = data;
             const currentYear = this.data.calendar[ this.data.calendar.length - 1 ];
             this.currentYear = currentYear.name;
+
+            defer.resolve();
+
+            return defer.promise();
+        }
+
+        private setYears(): JQueryPromise<{}> {
+            var defer = $.Deferred();
+
+            this.$year.html('');
+            for (var i = this.data.calendar.length - 1; i >= 0; i--) {
+                
+                let digits = ( '' +  this.data.calendar[i].name ).split( '' );
+
+                let year = '';
+
+                for ( var ii = 0; ii < digits.length; ii++ ) {
+
+                    year += '<span>' + digits[ ii ] + '</span>';
+                }
+
+                this.$year.append('<div class="' + this.classNameYear + '">' + year + '</div>');
+            }
 
             defer.resolve();
 
@@ -107,13 +137,14 @@ namespace app {
 
         private displayData() {
 
+            let $yearsName = $('.' + this.classNameYear);
+            $yearsName.removeClass(this.classNameEneable);
 
-            let digits = ( '' + this.currentYear ).split( '' );
-            this.$year.html('');
-
-            for ( var i = digits.length-1; i >= 0; i-- ) {
-
-                this.$year.prepend('<span>' + digits[ i ] + '</span>');
+            for ( var i = $yearsName.length-1; i >= 0; i-- ) {
+                if($yearsName.eq(i).text() == this.currentYear + ''){
+                    $yearsName.eq(i).addClass(this.classNameEneable);
+                    break;
+                }
             }
             for (var i = this.currentStats.length - 1; i >= 0; i--) {
                 

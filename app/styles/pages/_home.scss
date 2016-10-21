@@ -29,11 +29,11 @@ body {
     display: block;
     top: 0;
     bottom: 41px;
+    left: 50px;
     z-index: 2;
 
-    height: 250px;
-    width: 100%;
-    padding-left: 50px;
+    height: 200px;
+    width: calc(100% - 50px);
     margin: auto;
 
     color: rgba($color_blaze_orange, .5);
@@ -44,6 +44,34 @@ body {
 
     span {
         position: relative;
+    }
+}
+.year__name{
+    position: absolute;
+    width: 100%;
+    left: 0;
+    span {
+
+        opacity: 0;
+        display: inline-block;
+        @include transform(rotateX(100deg));
+        @include transition(opacity 0.75s $ease-in-back, transform 0.75s $ease-in-back);
+        @for $i from 1 through 12 {
+            &:nth-child(#{$i}){
+                @include transition-delay(#{0.1*$i}s);
+            }
+        }
+    }
+    &.eneable span {
+
+        opacity: 1;
+        @include transition(opacity 1.95s $ease-in-back, transform 1.95s $ease-in-back);
+        @include transform(rotateX(0deg));
+        @for $i from 1 through 12 {
+            &:nth-child(#{$i}){
+                @include transition-delay(#{0.1*$i}s);
+            }
+        }
     }
 }
 
@@ -127,7 +155,7 @@ body {
         }
         @for $i from 1 through 12 {
             &:nth-child(#{$i}) .bar{
-                @include transition-delay(#{0.05*$i}s)
+                @include transition-delay(#{0.05*$i}s);
             }
         }
     }
