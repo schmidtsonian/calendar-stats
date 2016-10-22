@@ -1,11 +1,15 @@
 /// <reference path="definitions/jquery/jquery.d.ts" />
 
-
 ////////////////////////////////
 //
 // this is only an exercice, the promises are just for practice
 //
 //
+
+interface JQuery {
+    swipe(options: any): any
+}
+
 namespace app {
 
     interface Year {
@@ -41,13 +45,14 @@ namespace app {
             this.classNameYear = 'year__name';
             
             this.$container = $( '#js-conainer' )
-            this.$year = $( '#js-year' );
-            this.$stats = $( '.js-stats' );
+            this.$year = $( '#js-year', this.$container );
+            this.$stats = $( '.js-stats', this.$container );
         }
 
         init() {
 
             this
+                .bindings()
                 .loadCalendar()
                 .then( this.getLastYear.bind( this ) )
                 .then( this.setYears.bind( this ) )
@@ -55,12 +60,48 @@ namespace app {
                 .then( this.setStats.bind( this ) );
         }
 
+        private bindings(): this {
+
+            $(document).keydown( (e) => {
+
+                switch( e.which ) {
+                    // left
+                    case 37: 
+                        this.loadYear(this.currentYear - 1);
+                        break;
+                    case 40: 
+                        this.loadYear(this.currentYear - 1);
+                        break;
+
+                    // right
+                    case 39:
+                        this.loadYear(this.currentYear + 1);
+                        break;
+                    case 38:
+                        this.loadYear(this.currentYear + 1);
+                        break;
+                    case 32:
+                        this.loadYear(this.currentYear + 1);
+                        break;
+                }
+                e.preventDefault(); // prevent the default action (scroll / move caret)
+            });
+
+            this.$container.swipe({
+                swipe: (event, direction, distance, duration, fingerCount, fingerData) => {
+
+                  if(direction == 'left') this.loadYear(this.currentYear - 1);
+                  if(direction == 'right') this.loadYear(this.currentYear + 1);
+                },
+            });
+
+            return this;
+        }
+
         private loadCalendar(): JQueryPromise<{}> {
 
             return $.getJSON( this.pathCalendar);
         }
-
-        
 
         private getLastYear( data: Calendar ): JQueryPromise<{}> {
 
@@ -97,8 +138,6 @@ namespace app {
 
             return defer.promise();
         }
-
-
 
         private getStats( yearName: number = this.currentYear ): JQueryPromise<Year> {
 
