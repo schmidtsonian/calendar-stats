@@ -71,7 +71,7 @@ body {
         @include transform(perspective(0) rotateX(0deg));
         @for $i from 1 through 12 {
             &:nth-child(#{$i}){
-                @include transition-delay(calc(1.4s + #{0.1*$i}s));
+                @include transition-delay(calc(1.3s + #{0.1*$i}s));
             }
         }
     }
@@ -157,7 +157,7 @@ body {
         }
         @for $i from 1 through 12 {
             &:nth-child(#{$i}) .bar{
-                @include transition-delay(#{0.05*$i}s);
+                @include transition-delay(#{0.1*$i}s);
             }
         }
     }

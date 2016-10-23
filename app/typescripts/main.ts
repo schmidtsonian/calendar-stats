@@ -23,30 +23,34 @@ namespace app {
 
     export class Main {
         
-        private pathCalendar: string;
-        private data: Calendar;
+        private pathCalendar     : string;
+        private data             : Calendar;
 
-        private currentYear: number;
-        private currentStats: [number];
+        private currentYear      : number;
+        private currentStats     : [number];
 
-        private classNameDisable: string;
-        private classNameEneable: string;
-        private classNameYear: string;
+        private classNameDisable : string;
+        private classNameEneable : string;
+        private classNameYear    : string;
 
-        private $container: JQuery;
-        private $year: JQuery;
-        private $stats: JQuery;
+        private delayActiveStats : number; //in milliseconds
+
+        private $container       : JQuery;
+        private $year            : JQuery;
+        private $stats           : JQuery;
 
         constructor() {
 
-            this.pathCalendar = '../jsons/calendar.json';
+            this.pathCalendar     = '../jsons/calendar.json';
             this.classNameDisable = 'disable';
             this.classNameEneable = 'eneable';
-            this.classNameYear = 'year__name';
+            this.classNameYear    = 'year__name';
+
+            this.delayActiveStats = 450;
             
-            this.$container = $( '#js-conainer' )
-            this.$year = $( '#js-year', this.$container );
-            this.$stats = $( '.js-stats', this.$container );
+            this.$container       = $( '#js-conainer' )
+            this.$year            = $( '#js-year', this.$container );
+            this.$stats           = $( '.js-stats', this.$container );
         }
 
         init() {
@@ -62,36 +66,27 @@ namespace app {
 
         private bindings(): this {
 
-            $(document).keydown( (e) => {
+            $( document )
+            .keydown( ( e: JQueryKeyEventObject ) => {
 
                 switch( e.which ) {
                     // left
-                    case 37: 
-                        this.loadYear(this.currentYear - 1);
-                        break;
-                    case 40: 
-                        this.loadYear(this.currentYear - 1);
-                        break;
+                    case 37: this.loadYear( this.currentYear - 1, e ); break;
+                    case 40: this.loadYear( this.currentYear - 1, e ); break;
 
                     // right
-                    case 39:
-                        this.loadYear(this.currentYear + 1);
-                        break;
-                    case 38:
-                        this.loadYear(this.currentYear + 1);
-                        break;
-                    case 32:
-                        this.loadYear(this.currentYear + 1);
-                        break;
-                }
-                e.preventDefault(); // prevent the default action (scroll / move caret)
+                    case 39: this.loadYear( this.currentYear + 1, e ); break;
+                    case 38: this.loadYear( this.currentYear + 1, e ); break;
+                    case 32: this.loadYear( this.currentYear + 1, e ); break;
+                };
             });
 
-            this.$container.swipe({
-                swipe: (event: any, direction: any, distance: any, duration: any, fingerCount: any, fingerData: any) => {
+            this.$container
+            .swipe( {
+                swipe: ( event: any, direction: any, distance: any, duration: any, fingerCount: any, fingerData: any ) => {
 
-                  if(direction == 'left') this.loadYear(this.currentYear - 1);
-                  if(direction == 'right') this.loadYear(this.currentYear + 1);
+                  if( direction == 'left'  ) this.loadYear( this.currentYear - 1 );
+                  if( direction == 'right' ) this.loadYear( this.currentYear + 1 );
                 },
             });
 
@@ -100,8 +95,23 @@ namespace app {
 
         private loadCalendar(): JQueryPromise<{}> {
 
-            return $.getJSON( this.pathCalendar);
+            return $.getJSON( this.pathCalendar );
         }
+
+        // private loadCalendar(): JQueryPromise<{}> {
+
+        //     var defer = $.Deferred();
+
+        //     defer.resolve( {
+        //         "calendar": [
+        //             {"name": 2014, "months": [25, 30, 50, 24, 12, 54, 55, 70, 80, 34, 52, 54 ] },
+        //             {"name": 2015, "months": [35, 40, 60, 34, 22, 64, 65, 80, 90, 44, 62, 64 ] },
+        //             {"name": 2016, "months": [45, 50, 70, 44, 32, 74, 75, 90, 95, 54, 72, 74 ] }
+        //         ]
+        //     });
+
+        //     return defer.promise();
+        // }
 
         private getLastYear( data: Calendar ): JQueryPromise<{}> {
 
@@ -181,7 +191,7 @@ namespace app {
             setTimeout( () => {
 
                 this.$container.removeClass( this.classNameDisable );
-            }, 950 );
+            }, this.delayActiveStats );
 
             let $yearsName = $('.' + this.classNameYear);
             $yearsName.removeClass(this.classNameEneable);
@@ -204,7 +214,9 @@ namespace app {
             
         }
 
-        private loadYear( yearName: number ) {
+        private loadYear( yearName: number, e?: JQueryKeyEventObject ) {
+
+            if( e ) e.preventDefault(); // prevent the default action (scroll / move caret)
 
             this
                 .getStats(yearName)
