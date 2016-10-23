@@ -71,7 +71,7 @@ body {
         @include transform(perspective(0) rotateX(0deg));
         @for $i from 1 through 12 {
             &:nth-child(#{$i}){
-                @include transition-delay(#{0.1*$i}s);
+                @include transition-delay(calc(1.4s + #{0.1*$i}s));
             }
         }
     }
@@ -196,5 +196,7 @@ body {
 }
 
 .disable .bar {
-    height: 85% !important;
+    height: 55% !important;
+    @include transition(height 0.45s $ease-out-quad);
+    @include transition-delay(0s !important);
 }

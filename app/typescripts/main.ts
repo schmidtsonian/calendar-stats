@@ -7,7 +7,7 @@
 //
 
 interface JQuery {
-    swipe(options: any): any
+    swipe(swipe: any): any
 }
 
 namespace app {
@@ -88,7 +88,7 @@ namespace app {
             });
 
             this.$container.swipe({
-                swipe: (event, direction, distance, duration, fingerCount, fingerData) => {
+                swipe: (event: any, direction: any, distance: any, duration: any, fingerCount: any, fingerData: any) => {
 
                   if(direction == 'left') this.loadYear(this.currentYear - 1);
                   if(direction == 'right') this.loadYear(this.currentYear + 1);
@@ -176,11 +176,19 @@ namespace app {
 
         private displayData() {
 
+            this.$container .addClass( this.classNameDisable );
+
+            setTimeout( () => {
+
+                this.$container.removeClass( this.classNameDisable );
+            }, 950 );
+
             let $yearsName = $('.' + this.classNameYear);
             $yearsName.removeClass(this.classNameEneable);
 
             for ( var i = $yearsName.length-1; i >= 0; i-- ) {
-                if($yearsName.eq(i).text() == this.currentYear + ''){
+                if($yearsName.eq(i).text() == this.currentYear + '') {
+                    
                     $yearsName.eq(i).addClass(this.classNameEneable);
                     break;
                 }
@@ -193,8 +201,7 @@ namespace app {
                 .css({'height': (100 - this.currentStats[i]) + '%'});
             }
             
-            this.$container
-            .removeClass( this.classNameDisable );
+            
         }
 
         private loadYear( yearName: number ) {
