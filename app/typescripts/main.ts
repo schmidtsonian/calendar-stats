@@ -85,8 +85,8 @@ namespace app {
             .swipe( {
                 swipe: ( event: any, direction: any, distance: any, duration: any, fingerCount: any, fingerData: any ) => {
 
-                  if( direction == 'left'  ) this.loadYear( this.currentYear - 1 );
-                  if( direction == 'right' ) this.loadYear( this.currentYear + 1 );
+                  if( direction == 'left'  ) this.loadYear( this.currentYear + 1 );
+                  if( direction == 'right' ) this.loadYear( this.currentYear - 1 );
                 },
             });
 
