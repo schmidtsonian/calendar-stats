@@ -1,5 +1,7 @@
 /// <reference path="definitions/jquery/jquery.d.ts" />
 
+/// <reference path="RippleButton.ts" />
+
 ////////////////////////////////
 //
 // this is only an exercice, the promises are just for practice
@@ -21,10 +23,13 @@ namespace app {
         calendar: [Year];
     }
 
+    import RippleButton = app.RippleButton;
+
     export class Main {
         
         private pathCalendar     : string;
         private data             : Calendar;
+        private rippleButton     : RippleButton;
 
         private currentYear      : number;
         private currentStats     : [number];
@@ -56,6 +61,8 @@ namespace app {
 
             this.$btPrev          = $( '#js-nav-prev' );
             this.$btNext          = $( '#js-nav-next' );
+
+            this.rippleButton = new RippleButton();
         }
 
         init() {
@@ -70,6 +77,8 @@ namespace app {
         }
 
         private bindings(): this {
+
+            this.rippleButton.init();
 
             $( document )
             .keydown( ( e: JQueryKeyEventObject ) => {
@@ -88,7 +97,7 @@ namespace app {
 
             this.$container
             .swipe( {
-                swipe: ( event: any, direction: any, distance: any, duration: any, fingerCount: any, fingerData: any ) => {
+                swipe: ( e: any, direction: any, dist: any, dur: any, count: any, data: any ) => {
 
                   if( direction == 'left'  ) this.loadYear( this.currentYear + 1 );
                   if( direction == 'right' ) this.loadYear( this.currentYear - 1 );
