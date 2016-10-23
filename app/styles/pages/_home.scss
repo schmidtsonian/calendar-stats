@@ -88,11 +88,11 @@ body {
 
         opacity: 1;
         @include perspective-origin(30% 30%);
-        @include transition(opacity 0.55s $ease-in-back, transform 0.55s $ease-in-back);
+        @include transition(opacity 1.25s $ease-in-back, transform 1.25s $ease-in-back);
         @include transform(perspective(0) rotateX(0deg));
         @for $i from 1 through 12 {
             &:nth-child(#{$i}){
-                @include transition-delay(calc(1.3s + #{0.1*$i}s));
+                @include transition-delay(calc(2.5s + #{0.1*$i}s));
             }
         }
     }
@@ -197,8 +197,25 @@ body {
         &:first-child {
             border: 0 none;
         }
+        &:nth-child(12),
+        &:nth-child(11),
+        &:nth-child(10){
+            .bar__txt:first-child{
+                right: 0;
+                text-align: left;
+            }
+        }
+        &:nth-child(1),
+        &:nth-child(2),
+        &:nth-child(3){
+            .bar__txt:last-child{
+                right: inherit;
+                left: 0;
+                text-align: right;
+            }
+        }
         @for $i from 1 through 12 {
-            &:nth-child(#{$i}) .bar{
+            &:nth-child(#{$i}) .bar {
                 @include transition-delay(#{0.1*$i}s);
             }
         }
@@ -242,20 +259,69 @@ body {
 }
 
 .bar__txt {
+    @include transition(opacity 0.15s $ease-out-quad, width 0.15s $ease-out-quad );
+
     position: absolute;
-    display: block;
     bottom: 0;
+    z-index: 13;
+    display: block;
+    width: 500px;
+    border-bottom: 2px solid $color_blaze_orange;
+    color: $color_blaze_orange;
+
     opacity: 0;
+    
+    span{
+
+        @include transition(transform 0.15s $ease-out-quad);
+        display: inline-block;
+    }
+    &:first-child{
+        text-align: right;
+        span{
+            @include transform(translateX(100px))
+        }
+    }
+    &:last-child{
+        right: 0;
+        span{
+            @include transform(translateX(-100px))
+        }
+    }
+
+    @media only screen and (max-width: 768px) {
+        font-size: 10px;
+    }
 }
-.highlight__low .bar__txt:last-child,
-.highlight__high .bar__txt:first-child{
+
+.highlight__low .bar__txt:last-child,.highlight__high .bar__txt:first-child {
+    width: 100px;
     opacity: 1;
+    span{
+        @include transform(translateX(0))
+    }
+}
+.highlight__low .bar__txt:last-child{
+    @include transition(opacity 0.35s $ease-out-quad 1.75s, width 0.65s $ease-out-quad 1.75s);
+    span{
+        @include transform(translateX(0));
+        @include transition(transform 0.45s $ease-out-back 2s);
+    }
+
+}
+.highlight__high .bar__txt:first-child {
+    @include transition(opacity 0.35s $ease-out-quad 2.45s, width 0.65s $ease-out-quad 2.45s);
+    span{
+        @include transform(translateX(0));
+        @include transition(transform 0.45s $ease-out-back 2.75s);
+    }
 }
 
 .disable .bar {
-    height: 55% !important;
     @include transition(height 0.45s $ease-out-quad);
     @include transition-delay(0s !important);
+
+    height: 55% !important;
 }
 
 .nav {
@@ -263,6 +329,7 @@ body {
 
     height: 100%;
     width: 10%;
+    z-index: 14;
 
     cursor: pointer;
 
@@ -310,26 +377,32 @@ body {
         }
     }
 }
-.nav-next{
+.nav-next {
     right: 0;
-    .arrow{
+
+    .arrow {
         @include transform-origin(center top);
-        @include transform(rotate(180deg))
+        @include transform(rotate(180deg));
     }
-
 }
 
-.ripple{
-    overflow: hidden;
+.ripple {
     @include transform(translateZ(0));
+
+    overflow: hidden;
 }
-.rippling{
+
+.rippling {
+    @include transform(translate3d(-50%,-50%,0));
+
     position: absolute;
-    border-radius: 50%;
-    background-color: #000;
-    pointer-events: none;
+
+    opacity: .3;
     padding: 0;
     margin: 0;
-    opacity: .3;
-    @include transform(translate3d(-50%,-50%,0));
+    border-radius: 50%;
+
+    background-color: #000;
+
+    pointer-events: none;
 }
