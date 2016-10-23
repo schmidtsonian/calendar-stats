@@ -241,6 +241,17 @@ body {
     }
 }
 
+.bar__txt {
+    position: absolute;
+    display: block;
+    bottom: 0;
+    opacity: 0;
+}
+.highlight__low .bar__txt:last-child,
+.highlight__high .bar__txt:first-child{
+    opacity: 1;
+}
+
 .disable .bar {
     height: 55% !important;
     @include transition(height 0.45s $ease-out-quad);

@@ -110,33 +110,32 @@ namespace app {
             return this;
         }
 
-        private loadCalendar(): JQueryPromise<{}> {
-
-            return $.getJSON( this.pathCalendar );
-        }
-
         // private loadCalendar(): JQueryPromise<{}> {
 
-        //     var defer = $.Deferred();
-
-        //     defer.resolve( {
-        //         "calendar": [
-        //             {"name": 2014, "months": [25, 30, 50, 24, 12, 54, 55, 70, 80, 34, 52, 54 ] },
-        //             {"name": 2015, "months": [35, 40, 60, 34, 22, 64, 65, 80, 90, 44, 62, 64 ] },
-        //             {"name": 2016, "months": [45, 50, 70, 44, 32, 74, 75, 90, 95, 54, 72, 74 ] }
-        //         ]
-        //     });
-
-        //     return defer.promise();
+        //     return $.getJSON( this.pathCalendar );
         // }
+
+        private loadCalendar(): JQueryPromise<{}> {
+
+            const defer = $.Deferred();
+
+            defer.resolve( {
+                "calendar": [
+                    {"name": 2014, "months": [ 54, 25, 55, 30, 50, 24, 52, 12, 54, 70, 80, 34 ] },
+                    {"name": 2015, "months": [ 35, 60, 34, 22, 64, 65, 40, 80, 90, 44, 64, 62 ] },
+                    {"name": 2016, "months": [ 50, 70, 44, 54, 95, 32, 74, 45, 75, 90, 72, 74 ] }
+                ]
+            });
+
+            return defer.promise();
+        }
 
         private getLastYear( data: Calendar ): JQueryPromise<{}> {
 
-            var defer = $.Deferred();
+            const defer = $.Deferred();
 
             this.data = data;
-            const currentYear = this.data.calendar[ this.data.calendar.length - 1 ];
-            this.currentYear = currentYear.name;
+            this.currentYear = this.data.calendar[ this.data.calendar.length - 1 ].name;
 
             defer.resolve();
 
@@ -144,16 +143,16 @@ namespace app {
         }
 
         private setYears(): JQueryPromise<{}> {
-            var defer = $.Deferred();
+            const defer = $.Deferred();
 
             this.$year.html('');
-            for (var i = this.data.calendar.length - 1; i >= 0; i--) {
+            for ( let i = this.data.calendar.length - 1; i >= 0; i-- ) {
                 
-                let digits = ( '' +  this.data.calendar[i].name ).split( '' );
+                const digits = ( '' +  this.data.calendar[i].name ).split( '' );
 
                 let year = '';
 
-                for ( var ii = 0; ii < digits.length; ii++ ) {
+                for ( let ii = 0; ii < digits.length; ii++ ) {
 
                     year += '<span>' + digits[ ii ] + '</span>';
                 }
@@ -168,9 +167,9 @@ namespace app {
 
         private getStats( yearName: number = this.currentYear ): JQueryPromise<Year> {
 
-            var defer = $.Deferred();
+            const defer = $.Deferred();
 
-            for ( var i = this.data.calendar.length - 1; i >= 0; i-- ) {
+            for ( let i = this.data.calendar.length - 1; i >= 0; i-- ) {
 
                 if( this.data.calendar[ i ].name == yearName ) {
                     
@@ -187,7 +186,7 @@ namespace app {
 
         private setStats( year: Year ): JQueryPromise<Year> {
 
-            var defer = $.Deferred();
+            const defer = $.Deferred();
             
             if( year ){
                 this.currentYear = year.name;
@@ -210,26 +209,36 @@ namespace app {
                 this.$container.removeClass( this.classNameDisable );
             }, this.delayActiveStats );
 
-            let $yearsName = $('.' + this.classNameYear);
+            const $yearsName = $('.' + this.classNameYear);
             $yearsName.removeClass(this.classNameEneable);
 
-            for ( var i = $yearsName.length-1; i >= 0; i-- ) {
-                if($yearsName.eq(i).text() == this.currentYear + '') {
+            for ( let i = $yearsName.length-1; i >= 0; i-- ) {
+                if( $yearsName.eq(i).text() == this.currentYear + '' ) {
                     
-                    $yearsName.eq(i).addClass(this.classNameEneable);
+                    $yearsName.eq(i).addClass( this.classNameEneable );
                     break;
                 }
             }
-            for (var i = this.currentStats.length - 1; i >= 0; i--) {
+            this.$stats.removeClass( 'highlight__high' );
+            this.$stats.removeClass( 'highlight__low' );
+
+            const max = Math.max.apply( Math,this.currentStats );
+            const min = Math.min.apply( Math,this.currentStats );
+
+            for ( let i = this.currentStats.length - 1; i >= 0; i-- ) {
                 
-                this.$stats
-                .eq(i)
+                const $el = this.$stats.eq(i);
+
+                $el
                 .find('.bar')
-                .css({'height': (100 - this.currentStats[i]) + '%'});
+                .css( { 'height': (100 - this.currentStats[i]) + '%' } );
+
+                if     ( max == this.currentStats[i] ){ $el.addClass( 'highlight__high'); }
+                else if( min == this.currentStats[i] ){ $el.addClass( 'highlight__low' ); }
             }
-            
-            
         }
+
+
 
         private loadYear( yearName: number, e?: JQueryKeyEventObject ) {
 
