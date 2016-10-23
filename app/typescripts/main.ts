@@ -38,6 +38,8 @@ namespace app {
         private $container       : JQuery;
         private $year            : JQuery;
         private $stats           : JQuery;
+        private $btPrev          : JQuery;
+        private $btNext          : JQuery;
 
         constructor() {
 
@@ -51,6 +53,9 @@ namespace app {
             this.$container       = $( '#js-conainer' )
             this.$year            = $( '#js-year', this.$container );
             this.$stats           = $( '.js-stats', this.$container );
+
+            this.$btPrev          = $( '#js-nav-prev' );
+            this.$btNext          = $( '#js-nav-next' );
         }
 
         init() {
@@ -89,6 +94,9 @@ namespace app {
                   if( direction == 'right' ) this.loadYear( this.currentYear - 1 );
                 },
             });
+
+            this.$btPrev.on('click touched', () => { this.loadYear( this.currentYear - 1 ) } );
+            this.$btNext.on('click touched', () => { this.loadYear( this.currentYear + 1 ) } );
 
             return this;
         }

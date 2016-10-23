@@ -5,6 +5,7 @@ block body
     section.wrapper(
     id='js-conainer',
     class='disable')
+
         ul.levels
             - for (var x = 10; x > 0; x--)
                 li: .levels__number= x * 10
@@ -31,4 +32,7 @@ block body
         .year#js-year
             .year__name
             .year__name
+
+    #js-nav-prev.nav.nav-prev: span
+    #js-nav-next.nav.nav-next: span
 

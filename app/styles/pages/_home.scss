@@ -246,3 +246,50 @@ body {
     @include transition(height 0.45s $ease-out-quad);
     @include transition-delay(0s !important);
 }
+
+.nav {
+    position: absolute;
+
+    height: 100%;
+    width: 10%;
+
+    cursor: pointer;
+
+    span {
+        position: absolute;
+        display: block;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+
+        height: 50px;
+        width: 50px;
+        margin: auto;
+
+        &:after,    &:before{
+
+            content: '';
+            display: block;
+            position: absolute;
+            width: 100%;
+            height: 1px;
+            background-color: $color_kabul;
+        }
+        &:after{
+            top: 35%;
+            @include transform(rotate(45deg))
+        }
+        &:before{
+            top: -35%;
+            @include transform(rotate(-45deg))
+        }
+    }
+}
+.nav-next{
+    right: 0;
+    span{
+        @include transform-origin(center top);
+        @include transform(rotate(180deg))
+    }
+}
