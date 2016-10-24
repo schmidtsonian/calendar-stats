@@ -123,8 +123,8 @@ namespace app {
                 "calendar": [
                     {"name": 2010, "months": [ 54, 25, 55, 30, 50, 24, 52, 12, 54, 70, 80, 34 ] },
                     {"name": 2011, "months": [ 35, 60, 34, 22, 64, 65, 40, 80, 90, 44, 10, 92 ] },
-                    {"name": 2012, "months": [ 10, 95, 44, 54, 17, 32, 74, 45, 75, 90, 72, 74 ] },
-                    {"name": 2013, "months": [ 10, 95, 44, 54, 17, 32, 74, 45, 75, 90, 72, 74 ] },
+                    {"name": 2012, "months": [ 80, 95, 44, 54, 17, 32, 74, 45, 75, 90, 72, 74 ] },
+                    {"name": 2013, "months": [ 10, 25, 44, 54, 17, 32, 74, 45, 75, 90, 72, 74 ] },
                     {"name": 2014, "months": [ 54, 25, 55, 30, 50, 24, 52, 12, 54, 70, 80, 34 ] },
                     {"name": 2015, "months": [ 35, 60, 34, 22, 64, 65, 40, 80, 90, 44, 64, 62 ] },
                     {"name": 2016, "months": [ 50, 70, 44, 54, 95, 12, 74, 45, 75, 90, 72, 74 ] }
@@ -196,6 +196,18 @@ namespace app {
                 this.currentYear = year.name;
                 this.currentStats = year.months;
 
+                if( this.isFirstYear() ){
+                    this.$btNext.css({'display': 'none'});
+                }else{
+                    this.$btNext.css({'display': 'block'});
+                }
+
+                if( this.isLAstYear() ){
+                    this.$btPrev.css({'display': 'none'});
+                }else{
+                    this.$btPrev.css({'display': 'block'});
+                }
+
                 this.displayData();
             }
 
@@ -242,7 +254,13 @@ namespace app {
             }
         }
 
+        private isLAstYear(): boolean {
+            return this.data.calendar[ 0 ].name == this.currentYear;
+        }
 
+        private isFirstYear(): boolean {
+            return this.data.calendar[ this.data.calendar.length - 1 ].name == this.currentYear;
+        }
 
         private loadYear( yearName: number, e?: JQueryKeyEventObject ) {
 

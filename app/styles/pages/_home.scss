@@ -12,6 +12,11 @@ body {
 }
 
 .wrapper {
+    @media only screen and (max-width: 768px) {
+        height: calc(100% - 20px);
+        width: 90%;
+    }
+
     position: absolute;
     top: 0;
     right: 0;
@@ -21,10 +26,6 @@ body {
     height: calc(100% - 40px);
     width: 80%;
     margin: auto;
-    @media only screen and (max-width: 768px) {
-        width: 90%;
-        height: calc(100% - 20px);
-    }
 }
 
 .year {
@@ -64,7 +65,6 @@ body {
 
         width: calc(100% - 20px);
     }
-
 }
 
 .year__name{
@@ -203,6 +203,13 @@ body {
             .bar__txt:first-child{
                 right: 0;
                 text-align: left;
+                span{
+                    left: -66px;
+                    right: initial;
+                    @media only screen and (max-width: 768px) {
+                        left: -46px;
+                    }
+                }
             }
         }
         &:nth-child(1),
@@ -212,6 +219,13 @@ body {
                 right: inherit;
                 left: 0;
                 text-align: right;
+                span{
+                    left: initial;
+                    right: -66px;
+                    @media only screen and (max-width: 768px) {
+                        right: -46px;
+                    }
+                }
             }
         }
         @for $i from 1 through 12 {
@@ -273,19 +287,30 @@ body {
     
     span{
 
-        @include transition(transform 0.15s $ease-out-quad);
+        @include transition(opacity 0.15s $ease-out-quad, transform 0.15s $ease-out-quad);
         display: inline-block;
+        top: 16px;
+        position: relative;
+        opacity: 0;
     }
     &:first-child{
         text-align: right;
         span{
-            @include transform(translateX(100px))
+            @include transform(translateX(100px));
+            right: -66px;
+            @media only screen and (max-width: 768px) {
+                right: -46px;
+            }
         }
     }
     &:last-child{
         right: 0;
         span{
-            @include transform(translateX(-100px))
+            @include transform(translateX(-100px));
+            left: -66px;
+            @media only screen and (max-width: 768px) {
+                left: -46px;
+            }
         }
     }
 
@@ -295,25 +320,19 @@ body {
 }
 
 .highlight__low .bar__txt:last-child,.highlight__high .bar__txt:first-child {
-    width: 100px;
-    opacity: 1;
-    span{
-        @include transform(translateX(0))
-    }
-}
-.highlight__low .bar__txt:last-child{
-    @include transition(opacity 0.35s $ease-out-quad 1.75s, width 0.65s $ease-out-quad 1.75s);
-    span{
-        @include transform(translateX(0));
-        @include transition(transform 0.45s $ease-out-back 2s);
+    @include transition(opacity 0.15s $ease-out-quad 2.45s, width 0.85s $ease-out-back 2.45s);
+    @media only screen and (max-width: 768px) {
+        width: 40px;
     }
 
-}
-.highlight__high .bar__txt:first-child {
-    @include transition(opacity 0.35s $ease-out-quad 2.45s, width 0.65s $ease-out-quad 2.45s);
-    span{
+    width: 100px;
+    opacity: 1;
+
+    span {
         @include transform(translateX(0));
-        @include transition(transform 0.45s $ease-out-back 2.75s);
+        @include transition(opacity 0.45s $ease-out-quad 2.3s, transform 0.45s $ease-out-back 2.3s);
+
+        opacity: 1;
     }
 }
 
@@ -402,7 +421,7 @@ body {
     margin: 0;
     border-radius: 50%;
 
-    background-color: #000;
+    background-color: $color_black;
 
     pointer-events: none;
 }
