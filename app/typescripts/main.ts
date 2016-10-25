@@ -53,7 +53,7 @@ namespace app {
             this.classNameEneable = 'eneable';
             this.classNameYear    = 'year__name';
 
-            this.delayActiveStats = 450;
+            this.delayActiveStats = 950;
             
             this.$container       = $( '#js-conainer' )
             this.$year            = $( '#js-year', this.$container );

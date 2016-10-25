@@ -425,3 +425,13 @@ body {
 
     pointer-events: none;
 }
+.credits{
+    position: fixed;
+    padding: 0 20px;
+    bottom: 0;
+    text-decoration: none;
+    color: $color_kabul;
+    z-index: 100;
+    font-size: 10px;
+    line-height: 18px;
+}
